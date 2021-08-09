@@ -2,6 +2,8 @@
 
 This is a Chrome extension that supports TA's work.
 
+<img width="514" alt="Screenshot 2021-08-09 at 08 09 16" src="https://user-images.githubusercontent.com/10878489/128650076-db573468-f3de-42e2-8af0-cf1678243e07.png">
+
 ## Features
 
 1. Submit time now: 打開新分頁，前往時數表頁面
