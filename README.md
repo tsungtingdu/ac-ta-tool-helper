@@ -15,7 +15,7 @@ This is a Chrome extension that supports TA's work.
 1. Clone (or download) this repo
 2. Go to `chrome://extension` in Chrome
 3. Click `Load unpacked` and upload this project
-4. You can fund "AC TA Tool Helper" when right clicking the page
+4. You can find "AC TA Tool Helper" when right clicking the page
 
 ---
 
