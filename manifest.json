@@ -1,0 +1,30 @@
+{
+  "name": "AC TA Tool Helper",
+  "version": "0.1",
+  "description": "AC TA Tool Helper",
+  "manifest_version": 2,
+  "permissions": [
+    "contextMenus",
+    "activeTab"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "main.js"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "images/16.png",
+    "32": "images/32.png",
+    "48": "images/48.png",
+    "128": "images/128.png"
+  }
+}
