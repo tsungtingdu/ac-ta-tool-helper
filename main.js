@@ -92,7 +92,7 @@ chrome.runtime.onMessage.addListener(message => {
 const body = document.querySelector('body')
 body.addEventListener('click', (e) => {
   const actionsBlock = document.querySelector('.editor-actions')
-  console.log(e.target.id)
+
   if (actionsBlock !== null && e.target.className === 'reply') { // 展開reply input
     if (actionsBlock.childElementCount === 2) { // 只有submit & cancel才插入按鈕
       appendElement(actionsBlock, 'Try harder', 'btn btn-secondary', 'try-harder')
