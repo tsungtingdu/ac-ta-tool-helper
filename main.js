@@ -87,3 +87,48 @@ chrome.runtime.onMessage.addListener(message => {
       return
   }
 })
+
+
+const body = document.querySelector('body')
+body.addEventListener('click', (e) => {
+  const actionsBlock = document.querySelector('.editor-actions')
+  console.log(e.target.id)
+  if (actionsBlock !== null && e.target.className === 'reply') { // 展開reply input
+    if (actionsBlock.childElementCount === 2) { // 只有submit & cancel才插入按鈕
+      appendElement(actionsBlock, 'Try harder', 'btn btn-secondary', 'try-harder')
+      appendElement(actionsBlock, 'Meet Expectations', 'btn btn-secondary', 'meet-expectations')
+    }
+  }
+
+  if (e.target.id === 'try-harder') {
+    postMessage('Try harder')
+  }
+  if (e.target.id === 'meet-expectations') {
+    postMessage('Meet expectations')
+  }
+})
+
+function appendElement(appendDom, text, customClass, id) {
+  const div = document.createElement('div')
+  div.innerText = text
+  div.className = customClass
+  div.setAttribute('id', id)
+  appendDom.prepend(div)
+}
+
+function postMessage(message) {
+  const editor = document.querySelector('trix-editor')
+  if (editor.firstChild === null) { // 沒value時需要先create div
+    const div = document.createElement('div')
+    editor.appendChild(div)
+  }
+  editor.firstChild.innerHTML += message
+  editor.firstChild.innerHTML += ` ${getStudentLink()}`
+}
+
+function getStudentLink() {
+  const nameDom = document.querySelector('.name')
+  const id = nameDom.firstChild.href.split('/').pop()
+  const name = nameDom.firstChild.innerText
+  return `<a href="/users/${id}?m=1">@${name}</a>`
+}
