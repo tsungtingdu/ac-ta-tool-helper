@@ -1,23 +1,28 @@
+const BASE_AC_URL = 'https://lighthouse.alphacamp.co/'
+const TA_WORK_TIME_URL = `${BASE_AC_URL}console/contract_work_times`
+const ASSIGNMENTS_URL = `${BASE_AC_URL}console/answer_lists`
+
 const items = [
   {
     "id": "submitWorkingTime",
     "title": "Submit time now",
     "contexts": ["all"],
+    "documentUrlPatterns": [`${BASE_AC_URL}*`]
   },
   {
     "id": "showAccumulatedTime",
     "title": "Show accumulated TA working time",
     "contexts": ["all"],
+    "documentUrlPatterns": [TA_WORK_TIME_URL]
   },
-    {
+  {
     "id": "showUnresolvedAssignments",
     "title": "Show unresolved assignments",
     "contexts": ["all"],
+    "documentUrlPatterns": [ASSIGNMENTS_URL]
   }
 ]
 
-const TA_WORK_TIME_URL = 'https://lighthouse.alphacamp.co/console/contract_work_times'
-const ASSIGNMENTS_URL = 'https://lighthouse.alphacamp.co/console/answer_lists'
 
 chrome.runtime.onInstalled.addListener(() => {
   items.forEach(item => chrome.contextMenus.create(item))
