@@ -83,24 +83,28 @@ chrome.runtime.onMessage.addListener(message => {
       return initCache()
     case "retrieveCachedInput":
       return retrieveCachedInput()
+    case "createShortcutBtn":
+      return createShortcutBtn()
     default:
       return
   }
 })
 
-
-const body = document.querySelector('body')
-body.addEventListener('click', e => {
-  const actionsBlocks = document.querySelectorAll('.editor-actions')
-  actionsBlocks.forEach((actionsBlock, index) => {
-    if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) { // 展開reply input且只有submit & cancel才插入按鈕
-      appendElement(actionsBlock, 'Meet expectations', 'btn btn-primary', `meet-expectations-${index}`)
-      appendElement(actionsBlock, 'Try harder', 'btn btn-primary', `try-harder-${index}`)
-    }
+function createShortcutBtn() {
+  if (!window.location.href.includes('ta_reviews/user_answers')) return false // 限制在TA reviews頁面使用此功能，submissions結構不一樣
+  const body = document.querySelector('body')
+  body.addEventListener('click', e => {
+    const actionsBlocks = document.querySelectorAll('.editor-actions')
+    actionsBlocks.forEach((actionsBlock, index) => {
+      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) { // 展開reply input且只有submit & cancel才插入按鈕
+        appendElement(actionsBlock, 'Meet expectations', 'btn btn-primary', `meet-expectations-${index}`)
+        appendElement(actionsBlock, 'Try harder', 'btn btn-primary', `try-harder-${index}`)
+      }
+    })
+    if (e.target.id.includes('meet-expectations')) postMessage(e.target.id, 'Meet expectations')
+    if (e.target.id.includes('try-harder')) postMessage(e.target.id, 'Try harder')
   })
-  if (e.target.id.includes('meet-expectations')) postMessage(e.target.id, 'Meet expectations')
-  if (e.target.id.includes('try-harder')) postMessage(e.target.id, 'Try harder')
-})
+}
 
 function appendElement(appendDom, text, customClass, id) {
   const div = document.createElement('div')
