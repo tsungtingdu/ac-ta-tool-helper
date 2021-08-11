@@ -100,12 +100,8 @@ body.addEventListener('click', (e) => {
     }
   }
 
-  if (e.target.id === 'try-harder') {
-    postMessage('Try harder')
-  }
-  if (e.target.id === 'meet-expectations') {
-    postMessage('Meet expectations')
-  }
+  if (e.target.id === 'try-harder') postMessage('Try harder')
+  if (e.target.id === 'meet-expectations') postMessage('Meet expectations')
 })
 
 function appendElement(appendDom, text, customClass, id) {
@@ -122,8 +118,7 @@ function postMessage(message) {
     const div = document.createElement('div')
     editor.appendChild(div)
   }
-  editor.firstChild.innerHTML += message
-  editor.firstChild.innerHTML += ` ${getStudentLink()}`
+  editor.firstChild.innerHTML += `${message} ${getStudentLink()}`
 }
 
 function getStudentLink() {
