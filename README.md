@@ -9,7 +9,7 @@ This is a Chrome extension that supports TA's work.
 1. Submit time now: 打開新分頁，前往時數表頁面
 2. Show accumulated TA working time: 加總時數表當前時數（只在時數表頁面有效）
 3. Show unresolved assignments: Highlight 尚未完成作業批改的課程（只在作業總覽頁面有效）
-4. Retrieve cached input: 取得近期輸入的內容
+4. Retrieve cached input: 呈現近期輸入的內容在新視窗當中。複製貼上至 Lighthouse editor 即可獲得原有內容與排版
 
 ## How to use
 
