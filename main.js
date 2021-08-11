@@ -27,6 +27,10 @@ const findUnresolvedAssignments = () => {
   })
 }
 
+const initCache = () => {
+  window.onload = cache();
+}
+
 const cache = () => {
   const body = document.querySelector('body')
   body.addEventListener('click', () => {
@@ -76,7 +80,7 @@ chrome.runtime.onMessage.addListener(message => {
     case "showUnresolvedAssignments":
       return findUnresolvedAssignments()
     case "cache":
-      return cache()
+      return initCache()
     case "retrieveCachedInput":
       return retrieveCachedInput()
     default:
