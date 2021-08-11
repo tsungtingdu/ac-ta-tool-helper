@@ -91,17 +91,17 @@ chrome.runtime.onMessage.addListener(message => {
 
 const body = document.querySelector('body')
 body.addEventListener('click', (e) => {
-  const actionsBlock = document.querySelector('.editor-actions')
-
-  if (actionsBlock !== null && e.target.className === 'reply') { // 展開reply input
-    if (actionsBlock.childElementCount === 2) { // 只有submit & cancel才插入按鈕
-      appendElement(actionsBlock, 'Try harder', 'btn btn-secondary', 'try-harder')
-      appendElement(actionsBlock, 'Meet Expectations', 'btn btn-secondary', 'meet-expectations')
+  const actionsBlocks = document.querySelectorAll('.editor-actions')
+  actionsBlocks.forEach((actionsBlock, index) => {
+    if (actionsBlock !== null && e.target.className === 'reply') { // 展開reply input
+      if (actionsBlock.childElementCount === 2) { // 只有submit & cancel才插入按鈕
+        appendElement(actionsBlock, 'Try harder', 'btn btn-secondary', `try-harder-${index}`)
+        appendElement(actionsBlock, 'Meet Expectations', 'btn btn-secondary', `meet-expectations-${index}`)
+      }
     }
-  }
-
-  if (e.target.id === 'try-harder') postMessage('Try harder')
-  if (e.target.id === 'meet-expectations') postMessage('Meet expectations')
+    if (e.target.id === `try-harder-${index}`) postMessage(index, 'Try harder')
+    if (e.target.id === `meet-expectations-${index}`) postMessage(index, 'Meet expectations')
+  })
 })
 
 function appendElement(appendDom, text, customClass, id) {
@@ -112,8 +112,8 @@ function appendElement(appendDom, text, customClass, id) {
   appendDom.prepend(div)
 }
 
-function postMessage(message) {
-  const editor = document.querySelector('trix-editor')
+function postMessage(index, message) {
+  const editor = document.querySelectorAll('trix-editor')[index]
   if (editor.firstChild === null) { // 沒value時需要先create div
     const div = document.createElement('div')
     editor.appendChild(div)
