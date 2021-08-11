@@ -90,18 +90,16 @@ chrome.runtime.onMessage.addListener(message => {
 
 
 const body = document.querySelector('body')
-body.addEventListener('click', (e) => {
+body.addEventListener('click', e => {
   const actionsBlocks = document.querySelectorAll('.editor-actions')
   actionsBlocks.forEach((actionsBlock, index) => {
-    if (actionsBlock !== null && e.target.className === 'reply') { // 展開reply input
-      if (actionsBlock.childElementCount === 2) { // 只有submit & cancel才插入按鈕
-        appendElement(actionsBlock, 'Try harder', 'btn btn-secondary', `try-harder-${index}`)
-        appendElement(actionsBlock, 'Meet Expectations', 'btn btn-secondary', `meet-expectations-${index}`)
-      }
+    if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) { // 展開reply input且只有submit & cancel才插入按鈕
+      appendElement(actionsBlock, 'Meet expectations', 'btn btn-primary', `meet-expectations-${index}`)
+      appendElement(actionsBlock, 'Try harder', 'btn btn-primary', `try-harder-${index}`)
     }
   })
-  if (e.target.id.includes('try-harder')) postMessage(e.target.id, 'Try harder')
   if (e.target.id.includes('meet-expectations')) postMessage(e.target.id, 'Meet expectations')
+  if (e.target.id.includes('try-harder')) postMessage(e.target.id, 'Try harder')
 })
 
 function appendElement(appendDom, text, customClass, id) {
@@ -112,9 +110,11 @@ function appendElement(appendDom, text, customClass, id) {
   appendDom.prepend(div)
 }
 
-function postMessage(id, message) { // 從觸發的btn id往上找editor
+function postMessage(id, message) {
+  // 從觸發的btn id往上找editor
   const editor = document.getElementById(id).parentNode.previousElementSibling.childNodes[3]
-  if (editor.firstChild === null) { // 沒value時需要先create div
+  // 沒value時需要先create div
+  if (editor.firstChild === null) {
     const div = document.createElement('div')
     editor.appendChild(div)
   }
