@@ -99,9 +99,9 @@ body.addEventListener('click', (e) => {
         appendElement(actionsBlock, 'Meet Expectations', 'btn btn-secondary', `meet-expectations-${index}`)
       }
     }
-    if (e.target.id === `try-harder-${index}`) postMessage(index, 'Try harder')
-    if (e.target.id === `meet-expectations-${index}`) postMessage(index, 'Meet expectations')
   })
+  if (e.target.id.includes('try-harder')) postMessage(e.target.id, 'Try harder')
+  if (e.target.id.includes('meet-expectations')) postMessage(e.target.id, 'Meet expectations')
 })
 
 function appendElement(appendDom, text, customClass, id) {
@@ -112,8 +112,8 @@ function appendElement(appendDom, text, customClass, id) {
   appendDom.prepend(div)
 }
 
-function postMessage(index, message) {
-  const editor = document.querySelectorAll('trix-editor')[index]
+function postMessage(id, message) { // 從觸發的btn id往上找editor
+  const editor = document.getElementById(id).parentNode.previousElementSibling.childNodes[3]
   if (editor.firstChild === null) { // 沒value時需要先create div
     const div = document.createElement('div')
     editor.appendChild(div)
