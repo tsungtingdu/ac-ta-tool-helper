@@ -20,12 +20,24 @@ const items = [
     "title": "Show unresolved assignments",
     "contexts": ["all"],
     "documentUrlPatterns": [ASSIGNMENTS_URL]
+  },
+  {
+    "id": "retrieveCachedInput",
+    "title": "Retrieve cached input",
+    "contexts": ["all"],
+    "documentUrlPatterns": [`${BASE_AC_URL}*`]
   }
 ]
 
 
 chrome.runtime.onInstalled.addListener(() => {
   items.forEach(item => chrome.contextMenus.create(item))
+
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete') {
+      return chrome.tabs.sendMessage(tabId, { target: 'cache' })
+    }
+  })
 })
 
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
@@ -38,6 +50,9 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
       break
     case "showUnresolvedAssignments":
       showUnresolvedAssignments()
+      break
+    case "retrieveCachedInput":
+      retrieveCachedInput()
       break
     default:
       return
@@ -77,5 +92,11 @@ function showUnresolvedAssignments() {
     }
 
     return chrome.tabs.sendMessage(tabs[0].id, { target: 'showUnresolvedAssignments' })
+  })
+}
+
+function retrieveCachedInput() {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs =>  {
+    return chrome.tabs.sendMessage(tabs[0].id, { target: 'retrieveCachedInput' })
   })
 }
