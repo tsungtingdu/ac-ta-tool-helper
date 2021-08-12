@@ -1,6 +1,6 @@
 ## Change log
 
-#### v0.5 (2021-08-10 by [tsungtingdu](https://github.com/tsungtingdu))
+#### v0.5 (2021-08-12 by [tsungtingdu](https://github.com/tsungtingdu))
 
 Fix url pattern for displaying "Show unresolved assignments" button
 
