@@ -3,7 +3,7 @@
 ### v0.5 (2021-08-12)
 
 - Fix url pattern for displaying "Show unresolved assignments" button (by [tsungtingdu](https://github.com/tsungtingdu))
-- Implement eslint (by [miayang0513](https://github.com/miayang0513)
+- Implement eslint (by [miayang0513](https://github.com/miayang0513))
 
 ### v0.4 (2021-08-11)
 
