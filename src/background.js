@@ -4,31 +4,30 @@ const ASSIGNMENTS_URL = `${BASE_AC_URL}console/answer_lists`
 
 const items = [
   {
-    "id": "submitWorkingTime",
-    "title": "Submit time now",
-    "contexts": ["all"],
-    "documentUrlPatterns": [`${BASE_AC_URL}*`]
+    id: 'submitWorkingTime',
+    title: 'Submit time now',
+    contexts: ['all'],
+    documentUrlPatterns: [`${BASE_AC_URL}*`]
   },
   {
-    "id": "showAccumulatedTime",
-    "title": "Show accumulated TA working time",
-    "contexts": ["all"],
-    "documentUrlPatterns": [TA_WORK_TIME_URL]
+    id: 'showAccumulatedTime',
+    title: 'Show accumulated TA working time',
+    contexts: ['all'],
+    documentUrlPatterns: [TA_WORK_TIME_URL]
   },
   {
-    "id": "showUnresolvedAssignments",
-    "title": "Show unresolved assignments",
-    "contexts": ["all"],
-    "documentUrlPatterns": [`${ASSIGNMENTS_URL}*`]
+    id: 'showUnresolvedAssignments',
+    title: 'Show unresolved assignments',
+    contexts: ['all'],
+    documentUrlPatterns: [`${ASSIGNMENTS_URL}*`]
   },
   {
-    "id": "retrieveCachedInput",
-    "title": "Retrieve cached input",
-    "contexts": ["all"],
-    "documentUrlPatterns": [`${BASE_AC_URL}*`]
+    id: 'retrieveCachedInput',
+    title: 'Retrieve cached input',
+    contexts: ['all'],
+    documentUrlPatterns: [`${BASE_AC_URL}*`]
   }
 ]
-
 
 chrome.runtime.onInstalled.addListener(() => {
   items.forEach(item => chrome.contextMenus.create(item))
@@ -43,39 +42,37 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
-    case "submitWorkingTime":
+    case 'submitWorkingTime':
       submitWorkingTime()
       break
-    case "showAccumulatedTime":
+    case 'showAccumulatedTime':
       showAccumulatedTime()
       break
-    case "showUnresolvedAssignments":
+    case 'showUnresolvedAssignments':
       showUnresolvedAssignments()
       break
-    case "retrieveCachedInput":
+    case 'retrieveCachedInput':
       retrieveCachedInput()
       break
-    default:
-      return
   }
 })
 
-function submitWorkingTime() {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs =>  {
+function submitWorkingTime () {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
     const currentUrl = tabs[0]?.url
-    
+
     if (currentUrl === TA_WORK_TIME_URL) {
       return alert('You are in the right page now!')
     }
-    
-    return chrome.tabs.create({ url: TA_WORK_TIME_URL });
+
+    return chrome.tabs.create({ url: TA_WORK_TIME_URL })
   })
 }
 
-function showAccumulatedTime() {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs =>  {
+function showAccumulatedTime () {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
     const currentUrl = tabs[0]?.url
-    
+
     if (currentUrl !== TA_WORK_TIME_URL) {
       return alert('Sorry, this feature is only avaiable in Lighthouse TA Tool 時數表 page')
     }
@@ -84,10 +81,10 @@ function showAccumulatedTime() {
   })
 }
 
-function showUnresolvedAssignments() {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs =>  {
+function showUnresolvedAssignments () {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
     const currentUrl = tabs[0]?.url
-    
+
     if (!currentUrl.includes(ASSIGNMENTS_URL)) {
       return alert('Sorry, this feature is only avaiable in Lighthouse TA Tool 作業總覽 page')
     }
@@ -96,8 +93,8 @@ function showUnresolvedAssignments() {
   })
 }
 
-function retrieveCachedInput() {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs =>  {
+function retrieveCachedInput () {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
     return chrome.tabs.sendMessage(tabs[0].id, { target: 'retrieveCachedInput' })
   })
 }
