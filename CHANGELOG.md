@@ -1,4 +1,9 @@
 ## Change log
+
+#### v0.5 (2021-08-12 by [miayang0513](https://github.com/miayang0513))
+
+Reconstruct project structure and implement eslint in order to let project coding style consist
+
 #### v0.4 (2021-08-11 by [TomatoSoup0126](https://github.com/TomatoSoup0126))
 
 Shortcut for inserting rank and tagging student

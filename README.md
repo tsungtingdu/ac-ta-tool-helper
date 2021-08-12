@@ -16,5 +16,23 @@ This is a Chrome extension that supports TA's work.
 
 1. Clone (or download) this repo
 2. Go to `chrome://extension` in Chrome
-3. Click `Load unpacked` and upload this project
+3. Click `Load unpacked` and upload `dist` folder
 4. You can find "AC TA Tool Helper" when right clicking the page
+
+## Development Setup
+```
+# watch and auto re-build dist folder
+$ npm run dev
+
+# build dist folder in production
+$ npm run build
+```
+
+## Project Structure
+- `dist`: contains built files for distribution.
+
+- `public`: contains the files that you don’t want to process through webpack. For example manifest and images.
+
+- `src`: contains the source code.
+
+- `webpack`: contains webpack configuration.
