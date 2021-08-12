@@ -10,7 +10,7 @@ const calculateTime = () => {
 }
 
 const findUnresolvedAssignments = () => {
-  const container = document.querySelector('.scrolＦlable .nav-pills')
+  const container = document.querySelector('.scrollable .nav-pills')
   const items = document.querySelectorAll('.scrollable .nav-pills .nav-item')
   const getCounts = node => Number(node.childNodes[1].childNodes[1].innerText)
 
