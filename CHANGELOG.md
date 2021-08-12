@@ -1,4 +1,7 @@
 ## Change log
+#### v0.4 (2021-08-11 by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+
+Shortcut for inserting rank and tagging student
 
 #### v0.3 (2021-08-10 by [tsungtingdu](https://github.com/tsungtingdu))
 
