@@ -26,6 +26,9 @@ $ npm run dev
 
 # build dist folder in production
 $ npm run build
+
+# run eslint to check file under the src folder
+$ npm run lint
 ```
 
 ## Project Structure
