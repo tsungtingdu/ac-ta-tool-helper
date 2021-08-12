@@ -1,19 +1,19 @@
 const calculateTime = () => {
-  let results = []
+  const results = []
   document.querySelectorAll('span').forEach(node => {
     if (node.innerText.includes('分鐘')) {
       results.push(node.innerText)
     }
   })
-  const sum = results.reduce((acc, i) => acc += Number(i.split('分鐘')[0]), 0)
-  alert(`目前累計 ${sum} 分鐘, 等於 ${Number(sum/60).toFixed(2)} 小時`)
+  const sum = results.reduce((acc, i) => acc + Number(i.split('分鐘')[0]), 0)
+  alert(`目前累計 ${sum} 分鐘, 等於 ${Number(sum / 60).toFixed(2)} 小時`)
 }
 
 const findUnresolvedAssignments = () => {
-  const container = document.querySelector('.scrollable .nav-pills')
+  const container = document.querySelector('.scrolＦlable .nav-pills')
   const items = document.querySelectorAll('.scrollable .nav-pills .nav-item')
   const getCounts = node => Number(node.childNodes[1].childNodes[1].innerText)
-  
+
   const newItems = Array.from(items).sort((a, b) => getCounts(b) - getCounts(a))
 
   container.innerHTML = ''
@@ -28,7 +28,7 @@ const findUnresolvedAssignments = () => {
 }
 
 const initCache = () => {
-  window.onload = cache();
+  window.onload = cache()
 }
 
 const cache = () => {
@@ -55,7 +55,7 @@ const cache = () => {
         })
       })
     }
-  });
+  })
 }
 
 const retrieveCachedInput = () => {
@@ -65,32 +65,28 @@ const retrieveCachedInput = () => {
     alert('There is no input cached')
   } else {
     const keys = Object.keys(cacheInput)
-    const newWindow = window.open("", "Title", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=500,height=500")
+    const newWindow = window.open('', 'Title', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=500,height=500')
 
-    newWindow.document.body.innerHTML = keys.sort().reduce((acc, key) =>
-      acc += `<div>${cacheInput[key]}</div><hr>`
-    , '')
+    newWindow.document.body.innerHTML = keys.sort().reduce((acc, key) => acc + `<div>${cacheInput[key]}</div><hr>`, '')
   }
 }
 
 chrome.runtime.onMessage.addListener(message => {
   switch (message.target) {
-    case "showAccumulatedTime":
+    case 'showAccumulatedTime':
       return calculateTime()
-    case "showUnresolvedAssignments":
+    case 'showUnresolvedAssignments':
       return findUnresolvedAssignments()
-    case "cache":
+    case 'cache':
       return initCache()
-    case "retrieveCachedInput":
+    case 'retrieveCachedInput':
       return retrieveCachedInput()
-    case "createShortcutBtn":
+    case 'createShortcutBtn':
       return createShortcutBtn()
-    default:
-      return
   }
 })
 
-function createShortcutBtn() {
+function createShortcutBtn () {
   // 限制在TA reviews頁面使用此功能，submissions結構不一樣
   if (!window.location.href.includes('ta_reviews/user_answers')) return
   const body = document.querySelector('body')
@@ -108,7 +104,7 @@ function createShortcutBtn() {
   })
 }
 
-function appendElement(appendDom, text, customClass, id) {
+function appendElement (appendDom, text, customClass, id) {
   const div = document.createElement('div')
   div.innerText = text
   div.className = customClass
@@ -116,7 +112,7 @@ function appendElement(appendDom, text, customClass, id) {
   appendDom.prepend(div)
 }
 
-function postMessage(id, message) {
+function postMessage (id, message) {
   // 從觸發的btn id往上找editor
   const editor = document.getElementById(id).parentNode.previousElementSibling.childNodes[3]
   // 沒value時需要先create div
@@ -127,7 +123,7 @@ function postMessage(id, message) {
   editor.firstChild.innerHTML += `${message} ${getStudentLink()}`
 }
 
-function getStudentLink() {
+function getStudentLink () {
   const nameDom = document.querySelector('.name')
   const id = nameDom.firstChild.href.split('/').pop()
   const name = nameDom.firstChild.innerText
