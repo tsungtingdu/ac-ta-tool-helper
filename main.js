@@ -83,7 +83,53 @@ chrome.runtime.onMessage.addListener(message => {
       return initCache()
     case "retrieveCachedInput":
       return retrieveCachedInput()
+    case "createShortcutBtn":
+      return createShortcutBtn()
     default:
       return
   }
 })
+
+function createShortcutBtn() {
+  // 限制在TA reviews頁面使用此功能，submissions結構不一樣
+  if (!window.location.href.includes('ta_reviews/user_answers')) return
+  const body = document.querySelector('body')
+  body.addEventListener('click', e => {
+    const actionsBlocks = document.querySelectorAll('.editor-actions')
+    actionsBlocks.forEach((actionsBlock, index) => {
+      // 展開reply input且只有submit & cancel才插入按鈕
+      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) {
+        appendElement(actionsBlock, 'Meet expectations', 'btn btn-primary', `meet-expectations-${index}`)
+        appendElement(actionsBlock, 'Try harder', 'btn btn-primary', `try-harder-${index}`)
+      }
+    })
+    if (e.target.id.includes('meet-expectations')) postMessage(e.target.id, 'Meet expectations')
+    if (e.target.id.includes('try-harder')) postMessage(e.target.id, 'Try harder')
+  })
+}
+
+function appendElement(appendDom, text, customClass, id) {
+  const div = document.createElement('div')
+  div.innerText = text
+  div.className = customClass
+  div.setAttribute('id', id)
+  appendDom.prepend(div)
+}
+
+function postMessage(id, message) {
+  // 從觸發的btn id往上找editor
+  const editor = document.getElementById(id).parentNode.previousElementSibling.childNodes[3]
+  // 沒value時需要先create div
+  if (editor.firstChild === null) {
+    const div = document.createElement('div')
+    editor.appendChild(div)
+  }
+  editor.firstChild.innerHTML += `${message} ${getStudentLink()}`
+}
+
+function getStudentLink() {
+  const nameDom = document.querySelector('.name')
+  const id = nameDom.firstChild.href.split('/').pop()
+  const name = nameDom.firstChild.innerText
+  return `<a href="/users/${id}?m=1">@${name}</a>`
+}
