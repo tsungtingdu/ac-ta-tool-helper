@@ -1,8 +1,8 @@
 ## Change log
 
-#### v0.5 (2021-08-12 by [miayang0513](https://github.com/miayang0513))
+#### v0.5 (2021-08-12 by [tsungtingdu](https://github.com/tsungtingdu))
 
-Reconstruct project structure and implement eslint in order to let project coding style consist
+Fix url pattern for displaying "Show unresolved assignments" button
 
 #### v0.4 (2021-08-11 by [TomatoSoup0126](https://github.com/TomatoSoup0126))
 
