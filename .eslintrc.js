@@ -11,7 +11,5 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module'
   },
-  rules: {
-    ignorePatterns: ['**/dist']
-  }
+  ignorePatterns: ['**/dist']
 }
