@@ -19,7 +19,7 @@ const items = [
     "id": "showUnresolvedAssignments",
     "title": "Show unresolved assignments",
     "contexts": ["all"],
-    "documentUrlPatterns": [ASSIGNMENTS_URL]
+    "documentUrlPatterns": [`${ASSIGNMENTS_URL}*`]
   },
   {
     "id": "retrieveCachedInput",
