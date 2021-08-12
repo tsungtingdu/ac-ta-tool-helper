@@ -91,12 +91,14 @@ chrome.runtime.onMessage.addListener(message => {
 })
 
 function createShortcutBtn() {
-  if (!window.location.href.includes('ta_reviews/user_answers')) return false // 限制在TA reviews頁面使用此功能，submissions結構不一樣
+  // 限制在TA reviews頁面使用此功能，submissions結構不一樣
+  if (!window.location.href.includes('ta_reviews/user_answers')) return
   const body = document.querySelector('body')
   body.addEventListener('click', e => {
     const actionsBlocks = document.querySelectorAll('.editor-actions')
     actionsBlocks.forEach((actionsBlock, index) => {
-      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) { // 展開reply input且只有submit & cancel才插入按鈕
+      // 展開reply input且只有submit & cancel才插入按鈕
+      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) {
         appendElement(actionsBlock, 'Meet expectations', 'btn btn-primary', `meet-expectations-${index}`)
         appendElement(actionsBlock, 'Try harder', 'btn btn-primary', `try-harder-${index}`)
       }
