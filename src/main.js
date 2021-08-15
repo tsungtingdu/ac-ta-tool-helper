@@ -81,35 +81,50 @@ chrome.runtime.onMessage.addListener(message => {
       return initCache()
     case 'retrieveCachedInput':
       return retrieveCachedInput()
-    case 'createShortcutBtn':
-      return createShortcutBtn()
+    case 'createRankShortcut':
+      return createRankShortcut()
   }
 })
 
-function createShortcutBtn () {
+// for rank shortcut
+const rankList = [
+  'Try harder',
+  'Meet expectations',
+  'Exceed expectations',
+  'Good',
+  'Excellent'
+]
+
+function createRankShortcut () {
   // 限制在TA reviews頁面使用此功能，submissions結構不一樣
   if (!window.location.href.includes('ta_reviews/user_answers')) return
   const body = document.querySelector('body')
   body.addEventListener('click', e => {
     const actionsBlocks = document.querySelectorAll('.editor-actions')
     actionsBlocks.forEach((actionsBlock, index) => {
-      // 展開reply input且只有submit & cancel才插入按鈕
+      // 展開reply input且只有submit & cancel才插入選單
       if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) {
-        appendElement(actionsBlock, 'Meet expectations', 'btn btn-primary', `meet-expectations-${index}`)
-        appendElement(actionsBlock, 'Try harder', 'btn btn-primary', `try-harder-${index}`)
+        appendShortcutSelect(actionsBlock, `shortcut-select-${index}`)
       }
     })
-    if (e.target.id.includes('meet-expectations')) postMessage(e.target.id, 'Meet expectations')
-    if (e.target.id.includes('try-harder')) postMessage(e.target.id, 'Try harder')
+  })
+  body.addEventListener('change', e => {
+    if (rankList.includes(e.target.value)) {
+      postMessage(e.target.id, e.target.value)
+    }
   })
 }
 
-function appendElement (appendDom, text, customClass, id) {
-  const div = document.createElement('div')
-  div.innerText = text
-  div.className = customClass
-  div.setAttribute('id', id)
-  appendDom.prepend(div)
+function appendShortcutSelect (appendDom, id) {
+  const select = document.createElement('select')
+  select.innerHTML = `
+    <option value="">-- Quick insert --</option>
+  `
+  rankList.forEach(rank => {
+    select.innerHTML += `<option value="${rank}">${rank}</option>`
+  })
+  select.setAttribute('id', id)
+  appendDom.prepend(select)
 }
 
 function postMessage (id, message) {
