@@ -13,8 +13,8 @@ const findUnresolvedAssignments = () => {
   const container = document.querySelector('.scrollable .nav-pills')
   const items = document.querySelectorAll('.scrollable .nav-pills .nav-item')
   const getCounts = node => Number(node.childNodes[1].childNodes[1].innerText)
-
   const newItems = Array.from(items).sort((a, b) => getCounts(b) - getCounts(a))
+  const unresolvedAssignments = []
 
   container.innerHTML = ''
   newItems.forEach(item => {
@@ -22,9 +22,13 @@ const findUnresolvedAssignments = () => {
       const span = item.childNodes[1].childNodes[1]
       span.classList.remove('badge-light')
       span.classList.add('badge-danger')
+      unresolvedAssignments.push(item.innerText)
     }
     container.appendChild(item)
   })
+  if (!unresolvedAssignments.length) {
+    alert('作業全部改完了 👍 👍 👍')
+  }
 }
 
 const initCache = () => {
