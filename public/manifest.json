@@ -5,7 +5,9 @@
   "manifest_version": 2,
   "permissions": [
     "contextMenus",
-    "activeTab"
+    "activeTab",
+    "webNavigation",
+    "storage"
   ],
   "background": {
     "scripts": [

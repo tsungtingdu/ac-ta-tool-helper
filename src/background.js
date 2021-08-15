@@ -40,6 +40,13 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 })
 
+chrome.webNavigation.onCompleted.addListener((detail) => {
+  const { tabId } = detail
+  chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
+}, {
+  url: [{ hostSuffix: 'lighthouse.alphacamp.co', pathContains: 'console/answer_lists' }]
+})
+
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case 'submitWorkingTime':

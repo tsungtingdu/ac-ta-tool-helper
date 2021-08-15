@@ -83,8 +83,83 @@ chrome.runtime.onMessage.addListener(message => {
       return retrieveCachedInput()
     case 'createShortcutBtn':
       return createShortcutBtn()
+    case 'createSwitchUnresolvedButton':
+      return createSwitchUnresolvedButton()
   }
 })
+
+function createSwitchUnresolvedButton () {
+  const titleElement = document.querySelector('.main > H1')
+  const headerElement = document.createElement('div')
+
+  titleElement.remove()
+  headerElement.classList.add('pb-2', 'mb-4', 'border-bottom', 'd-flex', 'align-items-end')
+  headerElement.innerHTML = `
+    <h1 class="m-0 pr-4">${titleElement.innerHTML}</h1>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="switchBtn">
+      <label class="custom-control-label" for="switchBtn">僅顯示尚未批改的合作項目</label>
+    </div>
+  `
+
+  document.querySelector('.main').prepend(headerElement)
+
+  const switchButtonElement = headerElement.querySelector('#switchBtn')
+  const courseTabs = Array.from(document.querySelectorAll('.main .scrollable .nav-pills .nav-item'))
+  const unresolvedCourseTabs = courseTabs.filter(courseTab => {
+    const amountOfUnresolvedAssignments = Number(courseTab.querySelector('.badge').innerHTML)
+    return amountOfUnresolvedAssignments !== 0
+  })
+
+  const remainUnresolvedCourseTabs = () => {
+    displayCourseTabs(unresolvedCourseTabs)
+
+    if (unresolvedCourseTabs.length === 0) {
+      document.querySelector('.main .my-3').remove()
+      document.querySelector('.main .card').remove()
+      const message = document.createElement('p')
+      message.classList.add('h3')
+      message.innerHTML = '作業全部都批改完囉'
+      document.querySelector('.main').append(message)
+      return
+    }
+
+    if (unresolvedCourseTabs.length > 0 && window.location.href === 'https://lighthouse.alphacamp.co/console/answer_lists') {
+      window.location.href = unresolvedCourseTabs[0].querySelector('a').href
+    }
+  }
+  const displayCourseTabs = (tabs) => {
+    const courseTabsContainer = document.querySelector('.scrollable .nav-pills')
+    courseTabsContainer.innerHTML = ''
+    tabs.forEach(tab => courseTabsContainer.append(tab))
+  }
+
+  chrome.storage.sync.get(['isOnlyDisplayUnresolvedCourseTabs'], function (result) {
+    if (Object.prototype.hasOwnProperty.call(result, 'isOnlyDisplayUnresolvedCourseTabs')) {
+      switchButtonElement.checked = result.isOnlyDisplayUnresolvedCourseTabs
+      if (result.isOnlyDisplayUnresolvedCourseTabs) {
+        remainUnresolvedCourseTabs()
+      } else {
+        displayCourseTabs(courseTabs)
+      }
+    } else {
+      switchButtonElement.checked = chrome.storage.sync.set({ isOnlyDisplayUnresolvedCourseTabs: false })
+    }
+  })
+
+  switchButtonElement.addEventListener('change', (e) => {
+    const isOnlyDisplayUnresolvedCourseTabs = e.target.checked
+    chrome.storage.sync.set({ isOnlyDisplayUnresolvedCourseTabs })
+    if (isOnlyDisplayUnresolvedCourseTabs) {
+      remainUnresolvedCourseTabs()
+    } else {
+      if (unresolvedCourseTabs.length === 0) {
+        return window.location.reload()
+      }
+      displayCourseTabs(courseTabs)
+    }
+  })
+}
 
 function createShortcutBtn () {
   // 限制在TA reviews頁面使用此功能，submissions結構不一樣
