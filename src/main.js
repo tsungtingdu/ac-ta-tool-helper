@@ -13,21 +13,32 @@ const findUnresolvedAssignments = () => {
   const container = document.querySelector('.scrollable .nav-pills')
   const items = document.querySelectorAll('.scrollable .nav-pills .nav-item')
   const getCounts = node => Number(node.childNodes[1].childNodes[1].innerText)
+  const getSemesterName = node => node.childNodes[0].nextSibling.innerText
   const newItems = Array.from(items).sort((a, b) => getCounts(b) - getCounts(a))
-  const unresolvedAssignments = []
 
+  const unresolvedSemester = []
   container.innerHTML = ''
   newItems.forEach(item => {
-    if (getCounts(item) > 0) {
+    let trimmedSemesterName = ''
+    const unresolvedAssignmentAmount = getCounts(item)
+    if (unresolvedAssignmentAmount > 0) {
       const span = item.childNodes[1].childNodes[1]
       span.classList.remove('badge-light')
       span.classList.add('badge-danger')
-      unresolvedAssignments.push(item.innerText)
+      const semesterName = getSemesterName(item)
+      trimmedSemesterName = semesterName
+        .slice(0, semesterName.length - 2)
+        .trim()
+      unresolvedSemester.push(`${trimmedSemesterName} -> ${unresolvedAssignmentAmount} 題`)
     }
     container.appendChild(item)
   })
-  if (!unresolvedAssignments.length) {
-    alert('作業全部改完了 👍 👍 👍')
+
+  if (unresolvedSemester.length) {
+    unresolvedSemester.unshift('待批改的作業：')
+    alert(unresolvedSemester.join('\n'))
+  } else {
+    alert('作業全部都改完囉👍👍👍')
   }
 }
 
