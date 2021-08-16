@@ -33,7 +33,7 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 })
 
-chrome.webNavigation.onCompleted.addListener(detail => {
+chrome.webNavigation.onCommitted.addListener(detail => {
   const { tabId } = detail
   chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
 }, {
