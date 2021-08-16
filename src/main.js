@@ -1,3 +1,5 @@
+const ASSIGNMENTS_URL = 'https://lighthouse.alphacamp.co/console/answer_lists'
+
 const calculateTime = () => {
   const results = []
   document.querySelectorAll('span').forEach(node => {
@@ -86,10 +88,7 @@ function createSwitchUnresolvedButton () {
 
   const switchButtonElement = headerElement.querySelector('#switchBtn')
   const courseTabs = Array.from(document.querySelectorAll('.main .scrollable .nav-pills .nav-item'))
-  const unresolvedCourseTabs = courseTabs.filter(courseTab => {
-    const amountOfUnresolvedAssignments = Number(courseTab.querySelector('.badge').innerHTML)
-    return amountOfUnresolvedAssignments !== 0
-  })
+  const unresolvedCourseTabs = courseTabs.filter(courseTab => Number(courseTab.querySelector('.badge').innerHTML) !== 0)
 
   const remainUnresolvedCourseTabs = () => {
     displayCourseTabs(unresolvedCourseTabs)
@@ -104,20 +103,21 @@ function createSwitchUnresolvedButton () {
       return
     }
 
-    if (unresolvedCourseTabs.length > 0 && window.location.href === 'https://lighthouse.alphacamp.co/console/answer_lists') {
+    if (unresolvedCourseTabs.length > 0 && window.location.href === ASSIGNMENTS_URL) {
       window.location.href = unresolvedCourseTabs[0].querySelector('a').href
     }
   }
-  const displayCourseTabs = (tabs) => {
+  const displayCourseTabs = tabs => {
     const courseTabsContainer = document.querySelector('.scrollable .nav-pills')
     courseTabsContainer.innerHTML = ''
     tabs.forEach(tab => courseTabsContainer.append(tab))
   }
 
-  chrome.storage.sync.get(['isOnlyDisplayUnresolvedCourseTabs'], function (result) {
+  chrome.storage.sync.get(['isOnlyDisplayUnresolvedCourseTabs'], result => {
     if (Object.prototype.hasOwnProperty.call(result, 'isOnlyDisplayUnresolvedCourseTabs')) {
-      switchButtonElement.checked = result.isOnlyDisplayUnresolvedCourseTabs
-      if (result.isOnlyDisplayUnresolvedCourseTabs) {
+      const retrievedResult = result.isOnlyDisplayUnresolvedCourseTabs
+      switchButtonElement.checked = retrievedResult
+      if (retrievedResult) {
         remainUnresolvedCourseTabs()
       } else {
         displayCourseTabs(courseTabs)
@@ -127,7 +127,7 @@ function createSwitchUnresolvedButton () {
     }
   })
 
-  switchButtonElement.addEventListener('change', (e) => {
+  switchButtonElement.addEventListener('change', e => {
     const isOnlyDisplayUnresolvedCourseTabs = e.target.checked
     chrome.storage.sync.set({ isOnlyDisplayUnresolvedCourseTabs })
     if (isOnlyDisplayUnresolvedCourseTabs) {
