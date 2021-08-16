@@ -109,8 +109,9 @@ function createRankShortcut () {
     })
   })
   body.addEventListener('change', e => {
-    if (rankList.includes(e.target.value)) {
-      postMessage(e.target.id, e.target.value)
+    const { target: { id, value } } = e
+    if (rankList.includes(value)) {
+      postMessage(id, value)
     }
   })
 }
