@@ -1,6 +1,5 @@
 const BASE_AC_URL = 'https://lighthouse.alphacamp.co/'
 const TA_WORK_TIME_URL = `${BASE_AC_URL}console/contract_work_times`
-const ASSIGNMENTS_URL = `${BASE_AC_URL}console/answer_lists`
 
 const items = [
   {
@@ -14,12 +13,6 @@ const items = [
     title: 'Show accumulated TA working time',
     contexts: ['all'],
     documentUrlPatterns: [TA_WORK_TIME_URL]
-  },
-  {
-    id: 'showUnresolvedAssignments',
-    title: 'Show unresolved assignments',
-    contexts: ['all'],
-    documentUrlPatterns: [`${ASSIGNMENTS_URL}*`]
   },
   {
     id: 'retrieveCachedInput',
@@ -40,6 +33,13 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 })
 
+chrome.webNavigation.onCommitted.addListener(detail => {
+  const { tabId } = detail
+  chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
+}, {
+  url: [{ hostSuffix: 'lighthouse.alphacamp.co', pathContains: 'console/answer_lists' }]
+})
+
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case 'submitWorkingTime':
@@ -47,9 +47,6 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
       break
     case 'showAccumulatedTime':
       showAccumulatedTime()
-      break
-    case 'showUnresolvedAssignments':
-      showUnresolvedAssignments()
       break
     case 'retrieveCachedInput':
       retrieveCachedInput()
@@ -78,18 +75,6 @@ function showAccumulatedTime () {
     }
 
     return chrome.tabs.sendMessage(tabs[0].id, { target: 'showAccumulatedTime' })
-  })
-}
-
-function showUnresolvedAssignments () {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-    const currentUrl = tabs[0]?.url
-
-    if (!currentUrl.includes(ASSIGNMENTS_URL)) {
-      return alert('Sorry, this feature is only avaiable in Lighthouse TA Tool 作業總覽 page')
-    }
-
-    return chrome.tabs.sendMessage(tabs[0].id, { target: 'showUnresolvedAssignments' })
   })
 }
 
