@@ -167,6 +167,7 @@ function createRankShortcut () {
     const { target: { id, value } } = e
     if (rankList.includes(value)) {
       postMessage(id, value)
+      handleScoreSelector(value)
     }
   })
 }
@@ -199,4 +200,25 @@ function getStudentLink () {
   const id = nameDom.firstChild.href.split('/').pop()
   const name = nameDom.firstChild.innerText
   return `<a href="/users/${id}?m=1">@${name}</a>`
+}
+
+function handleScoreSelector (value) {
+  document.getElementById('answer_list_score').value = mapRankToScore(value)
+}
+
+function mapRankToScore (value) {
+  switch (value) {
+    case 'Try harder':
+      return 3
+    case 'Meet expectations':
+      return 2
+    case 'Exceed expectations':
+      return 1
+    case 'Good':
+      return 2
+    case 'Excellent':
+      return 1
+    default:
+      break
+  }
 }
