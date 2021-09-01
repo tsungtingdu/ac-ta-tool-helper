@@ -24,17 +24,21 @@ const items = [
 
 chrome.runtime.onInstalled.addListener(() => {
   items.forEach(item => chrome.contextMenus.create(item))
-
-  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === 'complete') {
-      chrome.tabs.sendMessage(tabId, { target: 'cache' })
-      chrome.tabs.sendMessage(tabId, { target: 'createRankShortcut' })
-    }
-  })
 })
 
-chrome.webNavigation.onCommitted.addListener(detail => {
-  const { tabId } = detail
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { target: 'createRankShortcut' })
+}, {
+  url: [{ hostSuffix: 'lighthouse.alphacamp.co', pathContains: 'ta_reviews' }]
+})
+
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { target: 'cache' })
+}, {
+  url: [{ hostSuffix: 'lighthouse.alphacamp.co' }]
+})
+
+chrome.webNavigation.onCommitted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
 }, {
   url: [{ hostSuffix: 'lighthouse.alphacamp.co', pathContains: 'console/answer_lists' }]

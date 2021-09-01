@@ -11,10 +11,6 @@ const calculateTime = () => {
   alert(`目前累計 ${sum} 分鐘, 等於 ${Number(sum / 60).toFixed(2)} 小時`)
 }
 
-const initCache = () => {
-  window.onload = cache()
-}
-
 const cache = () => {
   const body = document.querySelector('body')
   body.addEventListener('click', () => {
@@ -60,7 +56,7 @@ chrome.runtime.onMessage.addListener(message => {
     case 'showAccumulatedTime':
       return calculateTime()
     case 'cache':
-      return initCache()
+      return cache()
     case 'retrieveCachedInput':
       return retrieveCachedInput()
     case 'createRankShortcut':
@@ -71,10 +67,15 @@ chrome.runtime.onMessage.addListener(message => {
 })
 
 function createSwitchUnresolvedButton () {
-  const titleElement = document.querySelector('.main > H1')
-  const headerElement = document.createElement('div')
+  let titleElement = null
 
+  while (!titleElement) {
+    titleElement = document.querySelector('.main > H1')
+  }
+
+  const headerElement = document.createElement('div')
   titleElement.remove()
+
   headerElement.classList.add('pb-2', 'mb-4', 'border-bottom', 'd-flex', 'align-items-end')
   headerElement.innerHTML = `
     <h1 class="m-0 pr-4">${titleElement.innerHTML}</h1>
