@@ -1,4 +1,5 @@
-const BASE_AC_URL = 'https://lighthouse.alphacamp.co/'
+const BASE_AC_URL_SUFFIX = 'lighthouse.alphacamp.co'
+const BASE_AC_URL = `https://${BASE_AC_URL_SUFFIX}/`
 const TA_WORK_TIME_URL = `${BASE_AC_URL}console/contract_work_times`
 
 const items = [
@@ -29,19 +30,19 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'createRankShortcut' })
 }, {
-  url: [{ hostSuffix: 'lighthouse.alphacamp.co', pathContains: 'ta_reviews' }]
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'ta_reviews' }]
 })
 
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'cache' })
 }, {
-  url: [{ hostSuffix: 'lighthouse.alphacamp.co' }]
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX }]
 })
 
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
 }, {
-  url: [{ hostSuffix: 'lighthouse.alphacamp.co', pathContains: 'console/answer_lists' }]
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/answer_lists' }]
 })
 
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
