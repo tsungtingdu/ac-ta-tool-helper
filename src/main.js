@@ -67,12 +67,7 @@ chrome.runtime.onMessage.addListener(message => {
 })
 
 function createSwitchUnresolvedButton () {
-  let titleElement = null
-
-  while (!titleElement) {
-    titleElement = document.querySelector('.main > H1')
-  }
-
+  const titleElement = document.querySelector('.main > H1')
   const headerElement = document.createElement('div')
   titleElement.remove()
 
@@ -92,6 +87,11 @@ function createSwitchUnresolvedButton () {
   const unresolvedCourseTabs = courseTabs.filter(courseTab => Number(courseTab.querySelector('.badge').innerHTML) !== 0)
 
   const remainUnresolvedCourseTabs = () => {
+    if (unresolvedCourseTabs.length > 0 && window.location.href === ASSIGNMENTS_URL) {
+      window.location.href = unresolvedCourseTabs[0].querySelector('a').href
+      return
+    }
+
     displayCourseTabs(unresolvedCourseTabs)
 
     if (unresolvedCourseTabs.length === 0) {
@@ -101,11 +101,6 @@ function createSwitchUnresolvedButton () {
       message.classList.add('h3')
       message.innerHTML = '作業全部都批改完囉'
       document.querySelector('.main').append(message)
-      return
-    }
-
-    if (unresolvedCourseTabs.length > 0 && window.location.href === ASSIGNMENTS_URL) {
-      window.location.href = unresolvedCourseTabs[0].querySelector('a').href
     }
   }
   const displayCourseTabs = tabs => {

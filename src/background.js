@@ -38,7 +38,7 @@ chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   url: [{ hostSuffix: 'lighthouse.alphacamp.co' }]
 })
 
-chrome.webNavigation.onCommitted.addListener(({ tabId }) => {
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
 }, {
   url: [{ hostSuffix: 'lighthouse.alphacamp.co', pathContains: 'console/answer_lists' }]
