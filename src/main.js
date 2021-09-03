@@ -1,5 +1,18 @@
 const ASSIGNMENTS_URL = 'https://lighthouse.alphacamp.co/console/answer_lists'
 
+const throttle = (func, limit) => {
+  let inThrottle
+  return function () {
+    const args = arguments
+    const context = this
+    if (!inThrottle) {
+      func.apply(context, args)
+      inThrottle = true
+      setTimeout(() => { inThrottle = false }, limit)
+    }
+  }
+}
+
 const calculateTime = () => {
   const results = []
   document.querySelectorAll('span').forEach(node => {
@@ -50,6 +63,8 @@ const retrieveCachedInput = () => {
     newWindow.document.body.innerHTML = keys.sort().reduce((acc, key) => acc + `<div>${cacheInput[key]}</div><hr>`, '')
   }
 }
+
+const createRankShortcut = throttle(_createRankShortcut, 500)
 
 chrome.runtime.onMessage.addListener(message => {
   switch (message.target) {
@@ -146,7 +161,7 @@ const rankList = [
   'Excellent'
 ]
 
-function createRankShortcut () {
+function _createRankShortcut () {
   // 限制在TA reviews頁面使用此功能，submissions結構不一樣
   if (!window.location.href.includes('ta_reviews/user_answers')) return
   const body = document.querySelector('body')
