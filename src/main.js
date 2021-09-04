@@ -11,10 +11,6 @@ const calculateTime = () => {
   alert(`目前累計 ${sum} 分鐘, 等於 ${Number(sum / 60).toFixed(2)} 小時`)
 }
 
-const initCache = () => {
-  window.onload = cache()
-}
-
 const cache = () => {
   const body = document.querySelector('body')
   body.addEventListener('click', () => {
@@ -60,7 +56,7 @@ chrome.runtime.onMessage.addListener(message => {
     case 'showAccumulatedTime':
       return calculateTime()
     case 'cache':
-      return initCache()
+      return cache()
     case 'retrieveCachedInput':
       return retrieveCachedInput()
     case 'createRankShortcut':
@@ -73,8 +69,8 @@ chrome.runtime.onMessage.addListener(message => {
 function createSwitchUnresolvedButton () {
   const titleElement = document.querySelector('.main > H1')
   const headerElement = document.createElement('div')
-
   titleElement.remove()
+
   headerElement.classList.add('pb-2', 'mb-4', 'border-bottom', 'd-flex', 'align-items-end')
   headerElement.innerHTML = `
     <h1 class="m-0 pr-4">${titleElement.innerHTML}</h1>
@@ -91,6 +87,11 @@ function createSwitchUnresolvedButton () {
   const unresolvedCourseTabs = courseTabs.filter(courseTab => Number(courseTab.querySelector('.badge').innerHTML) !== 0)
 
   const remainUnresolvedCourseTabs = () => {
+    if (unresolvedCourseTabs.length > 0 && window.location.href === ASSIGNMENTS_URL) {
+      window.location.href = unresolvedCourseTabs[0].querySelector('a').href
+      return
+    }
+
     displayCourseTabs(unresolvedCourseTabs)
 
     if (unresolvedCourseTabs.length === 0) {
@@ -100,11 +101,6 @@ function createSwitchUnresolvedButton () {
       message.classList.add('h3')
       message.innerHTML = '作業全部都批改完囉'
       document.querySelector('.main').append(message)
-      return
-    }
-
-    if (unresolvedCourseTabs.length > 0 && window.location.href === ASSIGNMENTS_URL) {
-      window.location.href = unresolvedCourseTabs[0].querySelector('a').href
     }
   }
   const displayCourseTabs = tabs => {
@@ -150,10 +146,17 @@ const rankList = [
   'Excellent'
 ]
 
+// flag for avoid adding EventListener twice in createRankShortcut
+let isCreateRankShortcutCalled = false
+
 function createRankShortcut () {
   // 限制在TA reviews頁面使用此功能，submissions結構不一樣
   if (!window.location.href.includes('ta_reviews/user_answers')) return
+  if (isCreateRankShortcutCalled) return
+
   const body = document.querySelector('body')
+  isCreateRankShortcutCalled = true
+
   body.addEventListener('click', e => {
     const actionsBlocks = document.querySelectorAll('.editor-actions')
     actionsBlocks.forEach((actionsBlock, index) => {
@@ -163,6 +166,7 @@ function createRankShortcut () {
       }
     })
   })
+
   body.addEventListener('change', e => {
     const { target: { id, value } } = e
     if (rankList.includes(value)) {
