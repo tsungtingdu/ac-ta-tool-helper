@@ -1,5 +1,10 @@
 ## Change log
 
+### v0.7 release (2021-09-05)
+
+- Select "Assignment Overall Score" when inserting grading into editor (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+- Fix dom manipulation timing issue (by [tsungtingdu](https://github.com/tsungtingdu))
+
 ### v0.6 release (2021-08-21)
 
 - Improvement for rank shortcut (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
