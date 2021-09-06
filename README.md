@@ -10,7 +10,7 @@ This is a Chrome extension that supports TA's work.
 2. Show accumulated TA working time: 加總時數表當前時數（只在時數表頁面有效）
 3. Can switch whether to display only unresolved course tabs: 可切換是否僅顯示尚未完成的合作項目（只在作業總覽頁面有效）
 4. Retrieve cached input: 呈現近期輸入的內容在新視窗當中。複製貼上至 Lighthouse editor 即可獲得原有內容與排版
-5. Shortcut for inserting rank and tagging student: 回覆區域新增捷徑選單，點擊後自動填入批改等第與標記學生
+5. Shortcut for inserting rank and tagging student: 回覆區域新增捷徑選單，點擊後自動填入批改等第與標記學生，同時自動選擇 Assignment Overall Score
 
 ## How to use
 
@@ -20,6 +20,7 @@ This is a Chrome extension that supports TA's work.
 4. You can find "AC TA Tool Helper" when right clicking the page
 
 ## Development Setup
+
 ```
 # watch and auto re-build dist folder
 $ npm run dev
@@ -32,6 +33,7 @@ $ npm run lint
 ```
 
 ## Project Structure
+
 - `dist`: contains built files for distribution.
 
 - `public`: contains the files that you don’t want to process through webpack. For example manifest and images.
