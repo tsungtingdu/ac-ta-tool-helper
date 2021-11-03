@@ -141,9 +141,7 @@ function createSwitchUnresolvedButton () {
 const rankList = [
   'Try harder',
   'Meet expectations',
-  'Exceed expectations',
-  'Good',
-  'Excellent'
+  'Exceed expectations'
 ]
 
 // flag for avoid adding EventListener twice in createRankShortcut
@@ -217,10 +215,6 @@ function mapRankToScore (value) {
     case 'Meet expectations':
       return 2
     case 'Exceed expectations':
-      return 1
-    case 'Good':
-      return 2
-    case 'Excellent':
       return 1
     default:
       break
