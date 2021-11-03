@@ -141,7 +141,8 @@ function createSwitchUnresolvedButton () {
 const rankList = [
   'Try harder',
   'Meet expectations',
-  'Exceed expectations'
+  'Exceed expectations',
+  'Tag student'
 ]
 
 // flag for avoid adding EventListener twice in createRankShortcut
@@ -194,7 +195,12 @@ function postMessage (id, message) {
     const div = document.createElement('div')
     editor.appendChild(div)
   }
-  editor.firstChild.innerHTML += `${message} ${getStudentLink()}`
+  // tag學生不用加上等第
+  if (message === 'Tag student') {
+    editor.firstChild.innerHTML += `${getStudentLink()}`
+  } else {
+    editor.firstChild.innerHTML += `${message} ${getStudentLink()}`
+  }
 }
 
 function getStudentLink () {
@@ -216,6 +222,8 @@ function mapRankToScore (value) {
       return 2
     case 'Exceed expectations':
       return 1
+    case 'Tag student':
+      return 2
     default:
       break
   }
