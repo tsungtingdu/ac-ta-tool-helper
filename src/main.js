@@ -172,7 +172,7 @@ function createRankShortcut () {
   body.addEventListener('change', e => {
     const { target: { id, value } } = e
     if (rankList.includes(value)) {
-      postMessage(id, value)
+      postMessage(value, getEditor(id))
       handleScoreSelector(value)
     }
   })
@@ -200,9 +200,7 @@ function createQuestionerShortcut () {
     const { target: { id } } = e
     // 找到所屬的ul parent
     const subject = e.target.closest('ul')
-    if (id.includes('shortcut-btn')) {
-      postQuestioner(id, subject)
-    }
+    if (id.includes('shortcut-btn')) postQuestioner(subject, getEditor(id))
   })
 }
 
@@ -226,7 +224,7 @@ function appendShortcutBtn (appendDom, id) {
   appendDom.prepend(btn)
 }
 
-function postMessage (id, message) {
+function getEditor (id) {
   // 從觸發的btn id往上找editor
   const editor = document.getElementById(id).parentNode.previousElementSibling.childNodes[3]
   // 沒value時需要先create div
@@ -234,34 +232,23 @@ function postMessage (id, message) {
     const div = document.createElement('div')
     editor.appendChild(div)
   }
+  return editor
+}
+
+function postMessage (message, editor) {
+  const target = document.querySelector('.name')
   // tag學生不用加上等第
-  if (message === 'Tag student') {
-    editor.firstChild.innerHTML += `${getStudentLink()}`
-  } else {
-    editor.firstChild.innerHTML += `${message} ${getStudentLink()}`
-  }
+  editor.firstChild.innerHTML += message === 'Tag student' ? `${getNameLink(target)}` : `${message} ${getNameLink(target)}`
 }
 
-function postQuestioner (id, subject) {
-  const editor = document.getElementById(id).parentNode.previousElementSibling.childNodes[3]
-  if (editor.firstChild === null) {
-    const div = document.createElement('div')
-    editor.appendChild(div)
-  }
-  editor.firstChild.innerHTML += `${getQuestionerLink(subject)}`
+function postQuestioner (subject, editor) {
+  const target = subject.getElementsByTagName('h3')[0].nextElementSibling.firstChild
+  editor.firstChild.innerHTML += `${getNameLink(target)}`
 }
 
-function getStudentLink () {
-  const nameDom = document.querySelector('.name')
-  const id = nameDom.firstChild.href.split('/').pop()
-  const name = nameDom.firstChild.innerText
-  return `<a href="/users/${id}?m=1">@${name}</a>`
-}
-
-function getQuestionerLink (subject) {
-  const nameDom = subject.getElementsByTagName('h3')[0].nextElementSibling.firstChild
-  const id = nameDom.firstChild.href.split('/').pop()
-  const name = nameDom.firstChild.innerText
+function getNameLink (target) {
+  const id = target.firstChild.href.split('/').pop()
+  const name = target.firstChild.innerText
   return `<a href="/users/${id}?m=1">@${name}</a>`
 }
 
