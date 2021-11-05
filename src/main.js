@@ -63,6 +63,8 @@ chrome.runtime.onMessage.addListener(message => {
       return createRankShortcut()
     case 'createSwitchUnresolvedButton':
       return createSwitchUnresolvedButton()
+    case 'createQuestionerShortcut':
+      return createQuestionerShortcut()
   }
 })
 
@@ -147,6 +149,7 @@ const rankList = [
 
 // flag for avoid adding EventListener twice in createRankShortcut
 let isCreateRankShortcutCalled = false
+let isCreateQuestionerShortcutCalled = false
 
 function createRankShortcut () {
   // 限制在TA reviews頁面使用此功能，submissions結構不一樣
@@ -175,6 +178,34 @@ function createRankShortcut () {
   })
 }
 
+function createQuestionerShortcut () {
+  // 限制在單元頁面使用
+  if (!window.location.href.includes('units')) return
+  if (isCreateQuestionerShortcutCalled) return
+
+  const body = document.querySelector('body')
+  isCreateQuestionerShortcutCalled = true
+
+  body.addEventListener('click', e => {
+    const actionsBlocks = document.querySelectorAll('.editor-actions')
+    actionsBlocks.forEach((actionsBlock, index) => {
+      // 展開reply input且只有submit & cancel才插入選單
+      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) {
+        appendShortcutBtn(actionsBlock, `shortcut-btn-${index}`)
+      }
+    })
+  })
+
+  body.addEventListener('click', e => {
+    const { target: { id } } = e
+    // 找到所屬的ul parent
+    const subject = e.target.closest('ul')
+    if (id.includes('shortcut-btn')) {
+      postQuestioner(id, subject)
+    }
+  })
+}
+
 function appendShortcutSelect (appendDom, id) {
   const select = document.createElement('select')
   select.innerHTML = `
@@ -185,6 +216,14 @@ function appendShortcutSelect (appendDom, id) {
   })
   select.setAttribute('id', id)
   appendDom.prepend(select)
+}
+
+function appendShortcutBtn (appendDom, id) {
+  const btn = document.createElement('div')
+  btn.classList = 'btn btn-primary'
+  btn.setAttribute('id', id)
+  btn.innerText = 'Tag questioner'
+  appendDom.prepend(btn)
 }
 
 function postMessage (id, message) {
@@ -203,8 +242,24 @@ function postMessage (id, message) {
   }
 }
 
+function postQuestioner (id, subject) {
+  const editor = document.getElementById(id).parentNode.previousElementSibling.childNodes[3]
+  if (editor.firstChild === null) {
+    const div = document.createElement('div')
+    editor.appendChild(div)
+  }
+  editor.firstChild.innerHTML += `${getQuestionerLink(subject)}`
+}
+
 function getStudentLink () {
   const nameDom = document.querySelector('.name')
+  const id = nameDom.firstChild.href.split('/').pop()
+  const name = nameDom.firstChild.innerText
+  return `<a href="/users/${id}?m=1">@${name}</a>`
+}
+
+function getQuestionerLink (subject) {
+  const nameDom = subject.getElementsByTagName('h3')[0].nextElementSibling.firstChild
   const id = nameDom.firstChild.href.split('/').pop()
   const name = nameDom.firstChild.innerText
   return `<a href="/users/${id}?m=1">@${name}</a>`
