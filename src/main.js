@@ -243,12 +243,19 @@ function getEditor (id) {
 function postMessage (message, editor) {
   const target = document.querySelector('.name')
   // tag學生不用加上等第
-  editor.firstChild.innerHTML += message === 'Tag student' ? `${getNameLink(target)}` : `${message} ${getNameLink(target)}`
+  const element = message === 'Tag student' ? `${getNameLink(target)}` : `${message} ${getNameLink(target)}`
+  insertToEditor(element, editor)
+  // editor.firstChild.innerHTML += message === 'Tag student' ? `${getNameLink(target)}` : `${message} ${getNameLink(target)}`
 }
 
 function postQuestioner (subject, editor) {
   const target = subject.getElementsByTagName('h3')[0].nextElementSibling.firstChild
-  editor.firstChild.innerHTML += `${getNameLink(target)}`
+  insertToEditor(getNameLink(target), editor)
+  // editor.firstChild.innerHTML += `${getNameLink(target)}`
+}
+
+function insertToEditor (element, editor) {
+  editor.firstChild.innerHTML += element
 }
 
 function getNameLink (target) {
