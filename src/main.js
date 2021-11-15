@@ -187,21 +187,26 @@ function createQuestionerShortcut () {
   isCreateQuestionerShortcutCalled = true
 
   body.addEventListener('click', e => {
-    const actionsBlocks = document.querySelectorAll('.editor-actions')
-    actionsBlocks.forEach((actionsBlock, index) => {
-      // 展開reply input且只有submit & cancel才插入選單
-      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) {
-        appendShortcutBtn(actionsBlock, `shortcut-btn-${index}`)
-      }
-    })
+    appendShortcutBtnInEditor(e)
+    getAndPostQuestioner(e)
   })
+}
 
-  body.addEventListener('click', e => {
-    const { target: { id } } = e
-    // 找到所屬的ul parent
-    const subject = e.target.closest('ul')
-    if (id.includes('shortcut-btn')) postQuestioner(subject, getEditor(id))
+function appendShortcutBtnInEditor (event) {
+  const actionsBlocks = document.querySelectorAll('.editor-actions')
+  actionsBlocks.forEach((actionsBlock, index) => {
+    // 展開reply input且只有submit & cancel才插入選單
+    if (actionsBlock !== null && event.target.className === 'reply' && actionsBlock.childElementCount === 2) {
+      appendShortcutBtn(actionsBlock, `shortcut-btn-${index}`)
+    }
   })
+}
+
+function getAndPostQuestioner (event) {
+  const { target: { id } } = event
+  // 找到所屬的ul parent
+  const subject = event.target.closest('ul')
+  if (id.includes('shortcut-btn')) postQuestioner(subject, getEditor(id))
 }
 
 function appendShortcutSelect (appendDom, id) {
