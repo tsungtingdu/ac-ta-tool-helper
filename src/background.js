@@ -45,6 +45,12 @@ chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/contract_work_times' }]
 })
 
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { target: 'showIncome' })
+}, {
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/ta_income' }]
+})
+
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case 'submitWorkingTime':
