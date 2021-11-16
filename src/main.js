@@ -1,16 +1,5 @@
 const ASSIGNMENTS_URL = 'https://lighthouse.alphacamp.co/console/answer_lists'
 
-const calculateTime = () => {
-  const results = []
-  document.querySelectorAll('span').forEach(node => {
-    if (node.innerText.includes('分鐘')) {
-      results.push(node.innerText)
-    }
-  })
-  const sum = results.reduce((acc, i) => acc + Number(i.split('分鐘')[0]), 0)
-  alert(`目前累計 ${sum} 分鐘, 等於 ${Number(sum / 60).toFixed(2)} 小時`)
-}
-
 const cache = () => {
   const body = document.querySelector('body')
   body.addEventListener('click', () => {
@@ -53,8 +42,6 @@ const retrieveCachedInput = () => {
 
 chrome.runtime.onMessage.addListener(message => {
   switch (message.target) {
-    case 'showAccumulatedTime':
-      return calculateTime()
     case 'cache':
       return cache()
     case 'retrieveCachedInput':
@@ -63,6 +50,8 @@ chrome.runtime.onMessage.addListener(message => {
       return createRankShortcut()
     case 'createSwitchUnresolvedButton':
       return createSwitchUnresolvedButton()
+    case 'showAccumulatedWorkingTime':
+      return showAccumulatedWorkingTime()
   }
 })
 
@@ -225,4 +214,54 @@ function mapRankToScore (value) {
     default:
       break
   }
+}
+
+const calculateTime = () => {
+  return new Promise(function (resolve, reject) {
+    setTimeout(() => {
+      const results = []
+      document.querySelectorAll('span').forEach(node => {
+        if (node.innerText.includes('分鐘')) {
+          results.push(node.innerText)
+        }
+      })
+      const result = results.reduce((acc, i) => acc + Number(i.split('分鐘')[0]), 0)
+      resolve(result)
+    }, 500)
+  })
+}
+
+const displayTime = () => {
+  calculateTime().then(time => {
+    const target = document.querySelector('.accumulated-time')
+    const message = `目前累計 ${time} 分鐘 (等於 ${Number(time / 60).toFixed(2)} 小時)`
+
+    if (!target) {
+      const contractWorkTimes = document.querySelector('.contract-work-times')
+      const container = document.createElement('div')
+      container.classList.add('accumulated-time')
+      container.innerText = message
+      container.style.cssText = 'margin-bottom: 20px'
+      contractWorkTimes.parentElement.insertBefore(container, contractWorkTimes)
+    } else {
+      target.innerText = message
+    }
+  })
+}
+
+// flag for avoid adding EventListener twice in showAccumulatedWorkingTime
+let isShowAccumulatedWorkingTimeCalled = false
+
+function showAccumulatedWorkingTime () {
+  if (isShowAccumulatedWorkingTimeCalled) return
+  isShowAccumulatedWorkingTimeCalled = true
+
+  displayTime()
+
+  const body = document.querySelector('body')
+  body.addEventListener('click', ({ target }) => {
+    if (target.classList.contains('btn')) {
+      displayTime()
+    }
+  })
 }
