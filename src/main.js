@@ -245,13 +245,11 @@ function postMessage (message, editor) {
   // tag學生不用加上等第
   const element = message === 'Tag student' ? `${getNameLink(target)}` : `${message} ${getNameLink(target)}`
   insertToEditor(element, editor)
-  // editor.firstChild.innerHTML += message === 'Tag student' ? `${getNameLink(target)}` : `${message} ${getNameLink(target)}`
 }
 
 function postQuestioner (subject, editor) {
   const target = subject.getElementsByTagName('h3')[0].nextElementSibling.firstChild
   insertToEditor(getNameLink(target), editor)
-  // editor.firstChild.innerHTML += `${getNameLink(target)}`
 }
 
 function insertToEditor (element, editor) {
