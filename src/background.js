@@ -28,6 +28,12 @@ chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
 })
 
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { target: 'createQuestionerShortcut' })
+}, {
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'units' }]
+})
+
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'cache' })
 }, {
   url: [{ hostSuffix: BASE_AC_URL_SUFFIX }]
