@@ -10,12 +10,6 @@ const items = [
     documentUrlPatterns: [`${BASE_AC_URL}*`]
   },
   {
-    id: 'showAccumulatedTime',
-    title: 'Show accumulated TA working time',
-    contexts: ['all'],
-    documentUrlPatterns: [TA_WORK_TIME_URL]
-  },
-  {
     id: 'retrieveCachedInput',
     title: 'Retrieve cached input',
     contexts: ['all'],
@@ -51,13 +45,22 @@ chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/answer_lists' }]
 })
 
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { target: 'showAccumulatedWorkingTime' })
+}, {
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/contract_work_times' }]
+})
+
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { target: 'showIncome' })
+}, {
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/ta_income' }]
+})
+
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case 'submitWorkingTime':
       submitWorkingTime()
-      break
-    case 'showAccumulatedTime':
-      showAccumulatedTime()
       break
     case 'retrieveCachedInput':
       retrieveCachedInput()
@@ -74,18 +77,6 @@ function submitWorkingTime () {
     }
 
     return chrome.tabs.create({ url: TA_WORK_TIME_URL })
-  })
-}
-
-function showAccumulatedTime () {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-    const currentUrl = tabs[0]?.url
-
-    if (currentUrl !== TA_WORK_TIME_URL) {
-      return alert('Sorry, this feature is only avaiable in Lighthouse TA Tool 時數表 page')
-    }
-
-    return chrome.tabs.sendMessage(tabs[0].id, { target: 'showAccumulatedTime' })
   })
 }
 
