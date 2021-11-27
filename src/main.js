@@ -1,4 +1,4 @@
-const ASSIGNMENTS_URL = 'https://lighthouse.alphacamp.co/console/answer_lists'
+import { ASSIGNMENTS_URL } from './utils/constants'
 
 const cache = () => {
   const body = document.querySelector('body')
