@@ -38,7 +38,7 @@ chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
 })
 
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
-  chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
+  chrome.tabs.sendMessage(tabId, { target: 'filterAssignmentStatus' })
 }, {
   url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: ROUTES.ASSIGNMENTS }]
 })
