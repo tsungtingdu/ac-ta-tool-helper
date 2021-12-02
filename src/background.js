@@ -1,19 +1,17 @@
-const BASE_AC_URL_SUFFIX = 'lighthouse.alphacamp.co'
-const BASE_AC_URL = `https://${BASE_AC_URL_SUFFIX}/`
-const TA_WORK_TIME_URL = `${BASE_AC_URL}console/contract_work_times`
+import { BASE_AC_URL_SUFFIX, BASE_AC_URL, TA_WORK_TIME_URL, ROUTES } from './utils/constants'
 
 const items = [
   {
     id: 'submitWorkingTime',
     title: 'Submit time now',
     contexts: ['all'],
-    documentUrlPatterns: [`${BASE_AC_URL}*`]
+    documentUrlPatterns: [`${BASE_AC_URL}/*`]
   },
   {
     id: 'retrieveCachedInput',
     title: 'Retrieve cached input',
     contexts: ['all'],
-    documentUrlPatterns: [`${BASE_AC_URL}*`]
+    documentUrlPatterns: [`${BASE_AC_URL}/*`]
   }
 ]
 
@@ -40,21 +38,21 @@ chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
 })
 
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
-  chrome.tabs.sendMessage(tabId, { target: 'createSwitchUnresolvedButton' })
+  chrome.tabs.sendMessage(tabId, { target: 'filterAssignmentStatus' })
 }, {
-  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/answer_lists' }]
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: ROUTES.ASSIGNMENTS }]
 })
 
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'showAccumulatedWorkingTime' })
 }, {
-  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/contract_work_times' }]
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: ROUTES.TA_WORK_TIME }]
 })
 
 chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'showIncome' })
 }, {
-  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: 'console/ta_income' }]
+  url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: ROUTES.TA_INCOMES }]
 })
 
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
