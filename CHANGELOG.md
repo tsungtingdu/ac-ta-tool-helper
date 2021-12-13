@@ -1,5 +1,11 @@
 ## Change log
 
+### v0.8 release (2021-12-12)
+
+- Enhance tagging feature in both assignment and Q&A page (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+- Calculate and display accumulated time and income (by [tsungtingdu](https://github.com/tsungtingdu))
+- Refactor codebase (by [miayang0513](https://github.com/miayang0513))
+
 ### v0.7 release (2021-09-05)
 
 - Select "Assignment Overall Score" when inserting grading into editor (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
