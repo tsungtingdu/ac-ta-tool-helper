@@ -33,8 +33,8 @@ export default () => {
   body.addEventListener('click', e => {
     const actionsBlocks = document.querySelectorAll('.editor-actions')
     actionsBlocks.forEach((actionsBlock, index) => {
-      // 展開reply input且只有submit & cancel才插入選單
-      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) {
+      // 展開reply input且其中無select才插入選單
+      if (actionsBlock !== null && e.target.className === 'reply' && !actionsBlock.querySelector('select')) {
         appendShortcutSelect(actionsBlock, `shortcut-select-${index}`)
       }
     })
