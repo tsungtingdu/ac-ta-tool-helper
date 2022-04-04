@@ -23,7 +23,7 @@ const RANKS = {
 let isCreateRankShortcutCalled = false
 
 export default () => {
-  // 限制在TA reviews頁面使用此功能，submissions結構不一樣
+  // 限制在 TA reviews 頁面使用此功能，submissions 結構不一樣
   if (!window.location.href.includes('ta_reviews/user_answers')) return
   if (isCreateRankShortcutCalled) return
   isCreateRankShortcutCalled = true
@@ -33,8 +33,8 @@ export default () => {
   body.addEventListener('click', e => {
     const actionsBlocks = document.querySelectorAll('.editor-actions')
     actionsBlocks.forEach((actionsBlock, index) => {
-      // 展開reply input且只有submit & cancel才插入選單
-      if (actionsBlock !== null && e.target.className === 'reply' && actionsBlock.childElementCount === 2) {
+      // 展開 reply input 且其中無 select 才插入選單
+      if (actionsBlock !== null && e.target.className === 'reply' && !actionsBlock.querySelector('select')) {
         appendShortcutSelect(actionsBlock, `shortcut-select-${index}`)
       }
     })
@@ -57,7 +57,7 @@ export default () => {
 
 function postMessage (message, editor) {
   const target = document.querySelector('.name')
-  // tag學生不用加上等第
+  // tag 學生不用加上等第
   const element = message === 'Tag student' ? `${getNameLink(target)}` : `${message} ${getNameLink(target)}`
   insertToEditor(element, editor)
 }
