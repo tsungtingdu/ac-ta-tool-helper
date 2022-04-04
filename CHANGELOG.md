@@ -1,5 +1,9 @@
 ## Change log
 
+### v0.9 release (2022-04-04)
+
+- Fix shortcut display in TA review page (due to Lighthouse update) (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+
 ### v0.8 release (2021-12-12)
 
 - Enhance tagging feature in both assignment and Q&A page (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
