@@ -47,7 +47,14 @@ export default () => {
     if (rank) {
       const { name, value } = RANKS[rank]
       if (value !== RANKS.TAG_STUDENT.value) {
-        document.getElementById('answer_list_score').value = value
+        const radios = document.querySelector('.radio').querySelectorAll('input')
+        radios.forEach(radio => {
+          if (+radio.value === value) {
+            radio.checked = true
+          } else {
+            radio.checked = false
+          }
+        })
       }
 
       postMessage(name, getEditor(id))
