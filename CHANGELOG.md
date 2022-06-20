@@ -1,5 +1,9 @@
 ## Change log
 
+### v0.11 release (2022-06-19)
+
+- Fix shortcut for inserting rank feature in TA review page (due to Lighthouse update) (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+
 ### v0.10 release (2022-05-25)
 
 - Fix select overall score feature in TA review page (due to Lighthouse update) (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
