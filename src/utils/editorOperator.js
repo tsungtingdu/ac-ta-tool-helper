@@ -1,6 +1,6 @@
 function getEditor (id) {
   // 從觸發的btn id往上找editor
-  const editor = document.getElementById(id).parentNode.previousElementSibling.previousElementSibling.childNodes[3]
+  const editor = document.getElementById(id).closest('form').querySelector('.trix-editor')
   // 沒value時需要先create div
   if (editor.firstChild === null) {
     const div = document.createElement('div')
