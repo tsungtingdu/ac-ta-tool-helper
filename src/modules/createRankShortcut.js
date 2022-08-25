@@ -28,6 +28,8 @@ export default () => {
   if (isCreateRankShortcutCalled) return
   isCreateRankShortcutCalled = true
 
+  injectToolbarStickyCSS()
+
   const body = document.querySelector('body')
 
   body.addEventListener('click', e => {
@@ -80,4 +82,21 @@ function appendShortcutSelect (appendDom, id) {
     select.innerHTML += `<option value="${value}">${name}</option>`
   })
   appendDom.prepend(select)
+}
+
+function injectToolbarStickyCSS () {
+  const injectStyle = document.getElementById('helper-inject-css')
+  if (!injectStyle) {
+    const head = document.head || document.getElementsByTagName('head')[0]
+    const style = document.createElement('style')
+    style.id = 'helper-inject-css'
+    style.textContent = `
+      trix-toolbar {
+        position: sticky;
+        top: 65px;
+        z-index: 4;
+      }
+    `
+    head.appendChild(style)
+  }
 }
