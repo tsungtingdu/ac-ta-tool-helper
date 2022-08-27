@@ -1,4 +1,4 @@
-import { getEditor, getNameLink, insertToEditor } from '../utils/editorOperator'
+import { getEditor, getNameLink, insertToEditor, injectToolbarStickyCSS } from '../utils/editorOperator'
 
 const RANKS = {
   TRT_HARDER: {
@@ -27,6 +27,8 @@ export default () => {
   if (!window.location.href.includes('ta_reviews/user_answers')) return
   if (isCreateRankShortcutCalled) return
   isCreateRankShortcutCalled = true
+
+  injectToolbarStickyCSS()
 
   const body = document.querySelector('body')
 

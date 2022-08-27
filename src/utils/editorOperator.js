@@ -19,4 +19,21 @@ function insertToEditor (element, editor) {
   editor.firstChild.innerHTML += element
 }
 
-export { getEditor, getNameLink, insertToEditor }
+function injectToolbarStickyCSS () {
+  const injectStyle = document.getElementById('helper-inject-css')
+  if (!injectStyle) {
+    const head = document.head || document.getElementsByTagName('head')[0]
+    const style = document.createElement('style')
+    style.id = 'helper-inject-css'
+    style.textContent = `
+      trix-toolbar {
+        position: sticky;
+        top: 65px;
+        z-index: 4;
+      }
+    `
+    head.appendChild(style)
+  }
+}
+
+export { getEditor, getNameLink, insertToEditor, injectToolbarStickyCSS }
