@@ -2,18 +2,15 @@
   "name": "AC TA Tool Helper",
   "version": "0.11",
   "description": "AC TA Tool Helper",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "permissions": [
     "contextMenus",
     "activeTab",
     "webNavigation",
     "storage"
   ],
-  "background": {
-    "scripts": [
-      "js/background.js"
-    ],
-    "persistent": false
+   "background": {
+    "service_worker": "js/background.js"
   },
   "content_scripts": [
     {
