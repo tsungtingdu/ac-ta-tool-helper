@@ -1,4 +1,4 @@
-import { getEditor, getNameLink, insertToEditor } from '../utils/editorOperator'
+import { getEditor, getNameLink, insertToEditor, injectToolbarStickyCSS } from '../utils/editorOperator'
 
 let isCreateQuestionerShortcutCalled = false
 
@@ -7,6 +7,8 @@ export default () => {
   if (!window.location.href.includes('units')) return
   if (isCreateQuestionerShortcutCalled) return
   isCreateQuestionerShortcutCalled = true
+
+  injectToolbarStickyCSS()
 
   const body = document.querySelector('body')
 
