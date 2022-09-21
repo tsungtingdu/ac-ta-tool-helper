@@ -1,5 +1,11 @@
 ## Change log
 
+### v0.12 release (2022-09-08)
+
+- Sticky Tool bar for text editor (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+- Migrating manifest to v3 (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+- Upgrade package.json (by [tsungtingdu](https://github.com/tsungtingdu))
+
 ### v0.11 release (2022-06-19)
 
 - Fix shortcut for inserting rank feature in TA review page (due to Lighthouse update) (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
