@@ -1,4 +1,11 @@
-import { BASE_AC_URL_SUFFIX, BASE_AC_URL, TA_WORK_TIME_URL, ROUTES } from './utils/constants'
+import {
+  BASE_AC_URL_SUFFIX,
+  BASE_AC_URL,
+  BASE_AC_CANVAS_URL_SUFFIX,
+  TA_WORK_TIME_URL,
+  ROUTES,
+  CANVAS_ROUTES
+} from './utils/constants'
 
 const items = [
   {
@@ -53,6 +60,12 @@ chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
   chrome.tabs.sendMessage(tabId, { target: 'showIncome' })
 }, {
   url: [{ hostSuffix: BASE_AC_URL_SUFFIX, pathContains: ROUTES.TA_INCOMES }]
+})
+
+chrome.webNavigation.onCompleted.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { target: 'createSpeedGraderShortcut' })
+}, {
+  url: [{ hostSuffix: BASE_AC_CANVAS_URL_SUFFIX, pathContains: CANVAS_ROUTES.SPEED_GRADER }]
 })
 
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
