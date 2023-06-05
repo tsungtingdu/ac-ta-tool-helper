@@ -11,6 +11,7 @@ This is a Chrome extension that supports TA's work.
 3. Can switch whether to display only unresolved course tabs: 可切換是否僅顯示尚未完成的合作項目（只在作業總覽頁面有效）
 4. Retrieve cached input: 呈現近期輸入的內容在新視窗當中。複製貼上至 Lighthouse editor 即可獲得原有內容與排版
 5. Shortcut for inserting rank and tagging student: 回覆區域新增捷徑選單，點擊後自動填入批改等第與標記學生，同時自動選擇 Assignment Overall Score
+6. [Canvas] Shortcut for inserting rank and tagging student: 回覆區域新增捷徑選單，點擊後自動填入批改等第與標記學生
 
 ## How to use
 
