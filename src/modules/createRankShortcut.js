@@ -1,23 +1,5 @@
 import { getEditor, getNameLink, insertToEditor, injectToolbarStickyCSS } from '../utils/editorOperator'
-
-const RANKS = {
-  TRT_HARDER: {
-    name: 'Try Harder',
-    value: 3
-  },
-  MEET_EXPECTATIONS: {
-    name: 'Meet expectations',
-    value: 2
-  },
-  EXCEED_EXPECTATIONS: {
-    name: 'Exceed expectations',
-    value: 1
-  },
-  TAG_STUDENT: {
-    name: 'Tag student',
-    value: 0
-  }
-}
+import { RANKS } from '../utils/constants'
 
 // flag for avoid adding EventListener twice in createRankShortcut
 let isCreateRankShortcutCalled = false
