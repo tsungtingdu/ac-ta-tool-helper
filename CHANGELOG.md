@@ -1,5 +1,8 @@
 ## Change log
 
+### v0.13 release (2022-06-05)
+- The shortcut for inserting the rank feature now supports the Canvas platform. (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
+
 ### v0.12 release (2022-09-08)
 
 - Sticky Tool bar for text editor (by [TomatoSoup0126](https://github.com/TomatoSoup0126))
